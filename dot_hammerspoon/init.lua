@@ -7,15 +7,14 @@ HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
 
 -- App bindings
 function setUpAppBindings()
-  hyperFocusAll('w', 'React Native Debugger', 'Simulator', 'qemu-system-x86_64')
+  --hyperFocusAll('w', 'React Native Debugger', 'Simulator', 'qemu-system-x86_64')
   --hyperFocusOrOpen('e', 'Notes')
   --hyperFocus('i', 'IntelliJ IDEA', 'IntelliJ IDEA-EAP', 'Xcode', 'Android Studio', 'Atom', 'Code')
-  --hyperFocusOrOpen('a', 'Finder')
-  --hyperFocusOrOpen('x', 'Calendar')
-  --hyperFocusOrOpen('m', 'Messages')
+  hyperFocusOrOpen('d', 'Finder')
+  hyperFocusOrOpen('f', 'Fantastical')
+  hyperFocusOrOpen('m', 'Messages')
   hyperFocusOrOpen('s', 'Slack')
   hyperFocus('c', 'Google Chrome')
-  hyperFocus('f', 'Fantastical')
   hyperFocus('a', 'Airmail')
   hyperFocus('t', 'Microsoft Teams')
   --hyperFocusOrOpen(';', 'iTerm2')
@@ -42,25 +41,31 @@ function setUpWindowManagement()
   local upperRight = hs.geometry("1,0 1x1")
   local lowerRight = hs.geometry("1,1 1x1")
 
-  hs.hotkey.bind(HYPER, 'l', mkSetFocus(fullScreen))
-  hs.hotkey.bind(HYPER, 'h', mkSetFocus(leftHalf))
-  hs.hotkey.bind(HYPER, "'", mkSetFocus(rightHalf))
-  hs.hotkey.bind(HYPER, "y", mkSetFocus(upperLeft))
-  hs.hotkey.bind(HYPER, "b", mkSetFocus(lowerLeft))
-  hs.hotkey.bind(HYPER, "u", mkSetFocus(upperRight))
-  hs.hotkey.bind(HYPER, "n", mkSetFocus(lowerRight))
-
-  hs.hotkey.bind(HYPER, "up", hs.window.filter.focusNorth)
-  hs.hotkey.bind(HYPER, "down", hs.window.filter.focusSouth)
-  hs.hotkey.bind(HYPER, "left", hs.window.filter.focusWest)
-  hs.hotkey.bind(HYPER, "right", hs.window.filter.focusEast)
+  hs.hotkey.bind(HYPER, 'z', mkSetFocus(fullScreen))
+ 
+ -- hs.hotkey.bind(HYPER, 'x', mkSetFocus(leftHalf))
+ -- hs.hotkey.bind(HYPER, "c", mkSetFocus(rightHalf))
+ -- hs.hotkey.bind(HYPER, "v", mkSetFocus(upperLeft))
+ -- hs.hotkey.bind(HYPER, "b", mkSetFocus(lowerLeft))
+  --hs.hotkey.bind(HYPER, "u", mkSetFocus(upperRight))
+  -- hs.hotkey.bind(HYPER, "n", mkSetFocus(lowerRight))
+  -- hs.hotkey.bind(HYPER, "up", hs.window.filter.focusNorth)
+  -- hs.hotkey.bind(HYPER, "down", hs.window.filter.focusSouth)
+  -- hs.hotkey.bind(HYPER, "left", hs.window.filter.focusWest)
+  -- hs.hotkey.bind(HYPER, "right", hs.window.filter.focusEast)
   -- hs.hotkey.bind(HYPER, "v", hs.window.filter.focusNorth)
   -- hs.hotkey.bind(HYPER, "c", hs.window.filter.focusSouth)
   -- hs.hotkey.bind(HYPER, "j", hs.window.filter.focusWest)
   -- hs.hotkey.bind(HYPER, "p", hs.window.filter.focusEast)
-  hs.hotkey.bind(HYPER, "q", hs.hints.windowHints)
+  -- hs.hotkey.bind(HYPER, "q", hs.hints.windowHints)
   -- HYPER "d" -- Bound in Karabiner to Cmd+Tab (application switcher)
   -- HYPER "k" -- Bound in Karabiner to Cmd+` (next window of application)
+
+  -- 2021.03.30 LF Modifications
+  hs.hotkey.bind(HYPER, "q", moveWindowToDisplay(1))
+  hs.hotkey.bind(HYPER, "w", moveWindowToDisplay(2))
+  hs.hotkey.bind(HYPER, "e", moveWindowToDisplay(3))
+
 
   -- throw to other screen
   hs.hotkey.bind(HYPER, 'o', function()
@@ -138,6 +143,18 @@ function setUpClipboardTool()
     toggle_clipboard = {HYPER, "p"}
   })
 end
+
+
+
+function moveWindowToDisplay(d)
+  return function()
+    local displays = hs.screen.allScreens()
+    local win = hs.window.focusedWindow()
+    win:moveToScreen(displays[d], false, true)
+  end
+end
+
+
 
 -- Main
 
